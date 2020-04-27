@@ -1,13 +1,12 @@
 // color
-const domain_arr=[1];
-for(let i = 0; i<9;i++){
-domain_arr.push((i+1)*39)
+const domain_arr=[1]; // cases with 1+ are colored
+for(let i = 0; i<9;i++){ // all other cases are colored with the zero case
+domain_arr.push((i+1)*39); //The multiplier fo case domains
 }
-console.log(domain_arr)
 const covid19_domain = domain_arr;
 const covid19_color = d3.scaleThreshold()
 .domain(covid19_domain)
-.range(d3.schemeGreens[9]);
+.range(d3.schemeBlues[9]);
 
 // covid data csv
 const covidData = d3.map();
@@ -16,26 +15,11 @@ const covidData = d3.map();
 d3.queue()
 .defer(d3.json, "./counties-10m.json")
 .defer(d3.csv, "./us-counties.csv", function(d) {
-    
 
-    
-
-    // let fipsVal = d.fips;
-    // // console.log(typeof  d.fips )
-    // if(fipsVal.includes(".")) {
-    //     fipsVal = fipsVal.split(".")[0];
-        
-    // }
-    // if(fipsVal.length === 4) {
-    //     fipsVal = "0" + fipsVal;
-    //     // console.log(fipsVal)
-    // }
-
+    // get data by date
     if(d.date === "2020-04-21") {
         covidData.set(d.fips, +d.cases);
     } 
-    
-    // console.log(typeof fipsVal)
     
 })
 .await(ready);
@@ -46,7 +30,7 @@ function ready(error, data) {
     if(error) throw error;
 
 
-    // usa map
+    // usa and gather mapmap
     const usa_map = topojson.feature(data, {
         type: "GeometryCollection",
         geometries: data.objects.counties.geometries
@@ -67,9 +51,8 @@ function ready(error, data) {
     .append("path")
     .attr("d", geoPath)
     .attr("fill", (d) => {
-        // console.log( typeof d.id);
         return covid19_color(d.corona = covidData.get(d.id) || 0);
-    });
+    }); //fill in counties according to cases. If no cases fill it with the 0 case
 
 
 }

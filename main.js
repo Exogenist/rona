@@ -1,71 +1,75 @@
-// const caseData = d3.map();
-const caseData = d3.csv("./covid19cases.csv");
+// color
+const domain_arr=[1];
+for(let i = 0; i<9;i++){
+domain_arr.push((i+1)*39)
+}
+console.log(domain_arr)
+const covid19_domain = domain_arr;
+const covid19_color = d3.scaleThreshold()
+.domain(covid19_domain)
+.range(d3.schemeGreens[9]);
 
-const countiesMap = d3.json("./usa-counties.json");
-const countiesMapAlt = d3.json("usmap.json");
+// covid data csv
+const covidData = d3.map();
 
-// data of all corona cases in the usa
+// async tasks
+d3.queue()
+.defer(d3.json, "./counties-10m.json")
+.defer(d3.csv, "./us-counties.csv", function(d) {
+    
 
+    
 
-//color
-// const casesDomain = [0,5000,10000,15000,20000,25000,30000,35000,40000,50000];
+    // let fipsVal = d.fips;
+    // // console.log(typeof  d.fips )
+    // if(fipsVal.includes(".")) {
+    //     fipsVal = fipsVal.split(".")[0];
+        
+    // }
+    // if(fipsVal.length === 4) {
+    //     fipsVal = "0" + fipsVal;
+    //     // console.log(fipsVal)
+    // }
 
-// const casesColor = d3.scaleThreshold()
-// .domain(casesDomain)
-// .range(d3.schemeBlues[9]);
-// ---------------------------------
+    if(d.date === "2020-04-21") {
+        covidData.set(d.fips, +d.cases);
+    } 
+    
+    // console.log(typeof fipsVal)
+    
+})
+.await(ready);
 
+// callaback function
+function ready(error, data) {
 
-
-//Get the data csv
-// caseData.then((data) => {
-//     console.log(+data[57].fips);
-
-//     let fipsVal;
-
-//     for(var i = 0; i < data.length; i++) {
-//         if(data[i].fips.includes(".") ) {
-//             fipsVal = data[i].fips.split(".")[0]
-//         };
-
-//         if(fipsVal.length === 4) { //there were some instances where the length of the FIPS code was 4, but 5 digit was needed
-//           fipsVal = "0" + fipsVal;
-//       }
-//         covid19data.set(+fipsVal, +data[i]["2020-04-23"]);
-//     }        
-
-// }).catch((err) => { return err });
-
-
-
+    if(error) throw error;
 
 
-countiesMap.then((data) => {
-
-    //usaMap
-    const usaMap = topojson.feature(data, {
+    // usa map
+    const usa_map = topojson.feature(data, {
         type: "GeometryCollection",
-        geometries: data.objects.countiesUnfiltered.geometries
+        geometries: data.objects.counties.geometries
+    });
+ 
+    // projection
+    const projection = d3.geoAlbersUsa()
+    .fitExtent([[0,0],[800,800]],usa_map);
+
+    // path
+    const geoPath = d3.geoPath()
+    .projection(projection);
+
+    // draw map
+    d3.select("svg.usamap").selectAll("path")
+    .data(usa_map.features)
+    .enter()
+    .append("path")
+    .attr("d", geoPath)
+    .attr("fill", (d) => {
+        // console.log( typeof d.id);
+        return covid19_color(d.corona = covidData.get(d.id) || 0);
     });
 
-    //projection
-    const projection = d3.geoAlbersUsa()
-        .fitExtent([[0, 0], [800, 800]], usaMap);
 
-    //path
-    const geoPath = d3.geoPath()
-        .projection(projection);
-
-console.log(data)
-
- d3.select("svg.usamap").selectAll("path")
-        .data(usaMap.features)
-        .enter()
-        .append("path")
-        .attr("d", geoPath)
-        .attr("fill", "lightblue");
-
-
-}).catch((err) => { err });
-
-   
+}

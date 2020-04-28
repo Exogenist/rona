@@ -9,10 +9,15 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="//d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-timer.v1.min.js"></script>
-</head>
+
 
 <body>
     <button class="btn" type="button">Play</button>
+    <div>
+        <input id="sliderRange" type="range" min=0 max=95 value=0>
+        <p>Date: <span id="dateLabel"></span></p>
+    </div>
+
     <svg class="usamap" width="800" height="800"></svg>
 
     <script src="./main.js"></script>

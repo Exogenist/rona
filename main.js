@@ -11,7 +11,6 @@ const covid19_color = d3.scaleThreshold()
 // covid data csv
 const covidData = d3.map();
 const dateData = {};
-// const dateRef = [];
 
 // tracks data for the day
 startDate = new Date("2020-01-21");
@@ -24,12 +23,14 @@ const createDateArr = (startDate, endDate) => {
     while (dt <= endDate) {
         arr.push(new Date(dt).toISOString().slice(0, 10));
         dt.setDate(dt.getDate() + 1);
+        // console.log(new Date(dt).toISOString().slice(0, 10))
     }
 
     return arr;
 }
-dateRef = createDateArr(startDate, endDate);
-// console.log(dateRef);
+const unique = createDateArr(startDate, endDate);
+const dateRef = [...new Set(unique)];
+// console.log(dateRef)
 
 // async tasks
 d3.queue()
@@ -75,8 +76,8 @@ function ready(error, data) {
         .enter()
         .append("path")
         .attr("d", geoPath)
-        .attr("stroke-width", 1)
-
+        .attr("stroke-width", 0.5)
+        .attr("stroke", "#ffffff")
         .attr("fill", (d) => {
 
             return covid19_color(d.corona = dateData["2020-01-21"].get(d.id) || 0);
@@ -91,7 +92,7 @@ function ready(error, data) {
 
     d3.select("button.btn").on("click", () => {
 
-        var t = d3.interval((e) => {
+        const t = d3.interval((e) => {
             map.transition()
                 .duration("350")
                 .attr("fill", (d) => {
@@ -101,18 +102,24 @@ function ready(error, data) {
 
 
             tracker = tracker + 1;
-            if (tracker > 96) {
+            if (tracker > 95) {
                 tracker = 0;
                 t.stop();
             }
         }, 200);
 
 
-
-
-
-
     });
+
+
+    //slider
+    const slider = document.getElementById("sliderRange");
+    const dateLabel = document.getElementById("dateLabel");
+    dateLabel.innerHTML = dateRef[slider.value]
+    slider.oninput = () => {
+        dateLabel.innerHTML = dateRef[slider.value]
+    };
+
 
 
 }

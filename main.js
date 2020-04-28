@@ -1,7 +1,7 @@
 // color
 const domain_arr = [1]; // cases with 1+ are colored
 for (let i = 0; i < 9; i++) { // all other cases are colored with the zero case
-    domain_arr.push((i + 1) * 69); //The multiplier fo case domains
+    domain_arr.push((i + 1) * 39); //The multiplier fo case domains
 }
 const covid19_domain = domain_arr;
 const covid19_color = d3.scaleThreshold()
@@ -14,26 +14,22 @@ const dateData = {};
 // const dateRef = [];
 
 // tracks data for the day
-startDate = new Date("2020-01-22");
+startDate = new Date("2020-01-21");
 endDate = new Date("2020-04-26");
-
-
 const createDateArr = (startDate, endDate) => {
-    // const dt = new Date(startDate).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\//g, "-")
+
     const arr = new Array();
     let dt = new Date(startDate);
 
     while (dt <= endDate) {
-        arr.push(new Date(dt).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\//g, "-"));
+        arr.push(new Date(dt).toISOString().slice(0, 10));
         dt.setDate(dt.getDate() + 1);
     }
 
     return arr;
-
-
 }
 dateRef = createDateArr(startDate, endDate);
-console.log(dateRef);
+// console.log(dateRef);
 
 // async tasks
 d3.queue()
@@ -80,32 +76,42 @@ function ready(error, data) {
         .append("path")
         .attr("d", geoPath)
         .attr("stroke-width", 1)
+
         .attr("fill", (d) => {
-
-            return covid19_color(d.corona = dateData["2020-04-24"].get(d.id) || 0);
-        })
-        //fill in counties according to cases. If no cases fill it with the 0 case
-        // .transition()
-        // .duration("1000")
-        .attr("fill", (d) => {
-
-            // d3.select("button.btn").on("click", (d) => {
-
-            // });
-
-            return covid19_color(d.corona = dateData["2020-04-24"].get(d.id) || 0);
-        })
-    d3.select("button.btn").on("click", (d) => {
-        // setTimeout((tracker)=>{
-        //     if(tracker < 94) {
-
-        //     }
-        // },700);
-
-        map.attr("fill", (d) => {
 
             return covid19_color(d.corona = dateData["2020-01-21"].get(d.id) || 0);
-        });
+        })
+
+
+
+
+    // animation
+    let tracker = 0;
+
+
+    d3.select("button.btn").on("click", () => {
+
+        var t = d3.interval((e) => {
+            map.transition()
+                .duration("350")
+                .attr("fill", (d) => {
+
+                    return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
+                })
+
+
+            tracker = tracker + 1;
+            if (tracker > 96) {
+                tracker = 0;
+                t.stop();
+            }
+        }, 200);
+
+
+
+
+
+
     });
 
 

@@ -10,6 +10,17 @@ const covid19_color = d3.scaleThreshold()
 
 // covid data csv
 const covidData = d3.map();
+const dateData = {};
+const dateRef = [];
+
+// tracks data for the day
+startDate = new Date("2020-01-21");
+endDate = new Date("2020-01-24");
+console.log(new Date(startDate));
+
+const createDateArr = () => {
+
+}
 
 // async tasks
 d3.queue()
@@ -17,8 +28,12 @@ d3.queue()
     .defer(d3.csv, "./us-counties.csv", function (d) {
 
         // get data by date
-        if (d.date === "2020-04-21") {
-            covidData.set(d.fips, +d.cases);
+        if (d.date) {
+            if (dateData.hasOwnProperty(d.date)) {
+                dateData[d.date].set(d.fips, +d.cases);
+            } else {
+                dateData[d.date] = d3.map().set(d.fips, +d.cases);
+            }
         }
 
 
@@ -29,7 +44,6 @@ d3.queue()
 function ready(error, data) {
 
     if (error) throw error;
-
 
     // gather map
     const usa_map = topojson.feature(data, {
@@ -45,16 +59,41 @@ function ready(error, data) {
     const geoPath = d3.geoPath()
         .projection(projection);
 
+
     // draw map
-    d3.select("svg.usamap").selectAll("path")
+    const map = d3.select("svg.usamap").selectAll("path")
         .data(usa_map.features)
         .enter()
         .append("path")
         .attr("d", geoPath)
         .attr("stroke-width", 1)
         .attr("fill", (d) => {
-            return covid19_color(d.corona = covidData.get(d.id) || 0);
-        }); //fill in counties according to cases. If no cases fill it with the 0 case
+
+            return covid19_color(d.corona = dateData["2020-04-24"].get(d.id) || 0);
+        })
+        //fill in counties according to cases. If no cases fill it with the 0 case
+        // .transition()
+        // .duration("1000")
+        .attr("fill", (d) => {
+
+            // d3.select("button.btn").on("click", (d) => {
+
+            // });
+
+            return covid19_color(d.corona = dateData["2020-04-24"].get(d.id) || 0);
+        })
+    d3.select("button.btn").on("click", (d) => {
+        // setTimeout((tracker)=>{
+        //     if(tracker < 94) {
+
+        //     }
+        // },700);
+
+        map.attr("fill", (d) => {
+
+            return covid19_color(d.corona = dateData["2020-01-21"].get(d.id) || 0);
+        });
+    });
 
 
 }

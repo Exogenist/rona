@@ -11,16 +11,29 @@ const covid19_color = d3.scaleThreshold()
 // covid data csv
 const covidData = d3.map();
 const dateData = {};
-const dateRef = [];
+// const dateRef = [];
 
 // tracks data for the day
-startDate = new Date("2020-01-21");
-endDate = new Date("2020-01-24");
-console.log(new Date(startDate));
+startDate = new Date("2020-01-22");
+endDate = new Date("2020-04-26");
 
-const createDateArr = () => {
+
+const createDateArr = (startDate, endDate) => {
+    // const dt = new Date(startDate).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\//g, "-")
+    const arr = new Array();
+    let dt = new Date(startDate);
+
+    while (dt <= endDate) {
+        arr.push(new Date(dt).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\//g, "-"));
+        dt.setDate(dt.getDate() + 1);
+    }
+
+    return arr;
+
 
 }
+dateRef = createDateArr(startDate, endDate);
+console.log(dateRef);
 
 // async tasks
 d3.queue()

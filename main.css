@@ -1,0 +1,58 @@
+.main-wrapper {
+    background-color: #b4b9bf;
+    font-family: 'Rubik', sans-serif;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+
+}
+
+.controls input {
+    width: 200px
+}
+
+.controls {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    max-width: 1280px;
+    justify-content: center;
+}
+
+.date-wrapper p {
+    text-align: center;
+    color: #ffffff;
+    font-size: 0.8rem;
+}
+
+div.tooltip { 
+    position: absolute;     
+    text-align: center;     
+    width: 80px;          
+    height: 14px;         
+    padding: 2px;       
+    font: 12px sans-serif;    
+    background: #fff; 
+    border: 0px;        
+    pointer-events: none;     
+}
+
+path:hover {
+    stroke: orange;
+  }

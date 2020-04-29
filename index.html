@@ -9,16 +9,25 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="//d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
 
 
-<body>
-    <button id="btnState" class="btn" type="button">Play</button>
-    <div>
+<body class="main-wrapper">
+
+
+    <div class="controls">
+        <button id="btnState" class="btn" type="button">Play</button>
         <input id="sliderRange" type="range" min=0 max=95 value=0>
-        <p>Date: <span id="dateLabel"></span></p>
-    </div>
 
-    <svg class="usamap" width="800" height="800"></svg>
+    </div>
+    <div class="date-wrapper">
+        <p>Covid-19 cases: <span id="dateLabel"></span></p>
+    </div>
+    <div class="wrapper">
+        <svg id="svgContainer" class="usamap" width="800" height="600"
+            style="max-width: 1280; height: auto; margin: auto" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
 
     <script src="./main.js"></script>
 </body>

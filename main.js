@@ -1,3 +1,15 @@
+// resize on initial load
+const svgContainer = document.getElementById("svgContainer")
+const w = svgContainer.clientWidth,
+    h = w / 2;
+console.log(w + ", " + h);
+
+//tool tip
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+
 // color
 const domain_arr = [1]; // cases with 1+ are colored
 for (let i = 0; i < 9; i++) { // all other cases are colored with the zero case
@@ -28,8 +40,8 @@ const createDateArr = (startDate, endDate) => {
 
     return arr;
 }
-const unique = createDateArr(startDate, endDate);
-const dateRef = [...new Set(unique)];
+const unique = createDateArr(startDate, endDate),
+    dateRef = [...new Set(unique)];
 // console.log(dateRef)
 
 // async tasks
@@ -62,8 +74,8 @@ function ready(error, data) {
     });
 
     // projection
-    const projection = d3.geoAlbersUsa()
-        .fitExtent([[0, 0], [800, 800]], usa_map);
+    let projection = d3.geoAlbersUsa()
+        .fitExtent([[0, 0], [w, h]], usa_map);
 
     // path
     const geoPath = d3.geoPath()
@@ -78,6 +90,19 @@ function ready(error, data) {
         .attr("d", geoPath)
         .attr("stroke-width", 0.5)
         .attr("stroke", "#ffffff")
+        .on("mouseover", (d) => {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(d.properties.name + ": " + d.corona)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function (d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        })
         .attr("fill", (d) => {
 
             return covid19_color(d.corona = dateData["2020-01-21"].get(d.id) || 0);
@@ -104,7 +129,6 @@ function ready(error, data) {
 
     // button
     d3.select("button.btn").on("click", (e) => {
-        // console.log(btnState.innerHTML);
         if (btnState.innerHTML === "Play") {
             btnState.innerHTML = "Stop";
         } else {
@@ -115,12 +139,10 @@ function ready(error, data) {
 
             if (btnState.innerHTML === "Stop") {
 
-                map.transition()
-                    .duration("300")
-                    .attr("fill", (d) => {
+                map.attr("fill", (d) => {
 
-                        return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
-                    });
+                    return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
+                });
 
                 slider.value = tracker;
                 dateLabel.innerHTML = dateRef[slider.value]
@@ -128,6 +150,8 @@ function ready(error, data) {
                 if (tracker > 95) {
                     tracker = 0;
                     t.stop();
+                    btnState.innerHTML = "Play";
+
                 }
                 slider.oninput = () => {
                     t.stop();
@@ -145,12 +169,17 @@ function ready(error, data) {
 
         }, 200);
 
-
     });
 
+    // resize window function
+    let resizeHelper;
+    const resize = () => {
+        map.attr("transform", "scale(" + svgContainer.clientWidth / w + ")");
+    };
+    window.onresize = () => {
+        clearTimeout(resizeHelper);
 
-
-
-
+        resizeHelper = setTimeout(resize, 500);
+    }
 
 }

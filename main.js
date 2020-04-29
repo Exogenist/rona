@@ -88,37 +88,68 @@ function ready(error, data) {
 
     // animation
     let tracker = 0;
+    //slider
+    const slider = document.getElementById("sliderRange");
+    const dateLabel = document.getElementById("dateLabel");
+    const btnState = document.getElementById("btnState");
+    dateLabel.innerHTML = dateRef[slider.value]
+    slider.oninput = () => {
+        tracker = +slider.value;
+        dateLabel.innerHTML = dateRef[slider.value];
+        map.attr("fill", (d) => {
 
+            return covid19_color(d.corona = dateData[dateRef[slider.value]].get(d.id) || 0);
+        });
+    };
 
-    d3.select("button.btn").on("click", () => {
+    // button
+    d3.select("button.btn").on("click", (e) => {
+        // console.log(btnState.innerHTML);
+        if (btnState.innerHTML === "Play") {
+            btnState.innerHTML = "Stop";
+        } else {
+            btnState.innerHTML = "Play";
+        }
 
-        const t = d3.interval((e) => {
-            map.transition()
-                .duration("350")
-                .attr("fill", (d) => {
+        const t = d3.interval(() => {
 
-                    return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
-                })
+            if (btnState.innerHTML === "Stop") {
 
+                map.transition()
+                    .duration("300")
+                    .attr("fill", (d) => {
 
-            tracker = tracker + 1;
-            if (tracker > 95) {
-                tracker = 0;
+                        return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
+                    });
+
+                slider.value = tracker;
+                dateLabel.innerHTML = dateRef[slider.value]
+                tracker = tracker + 1;
+                if (tracker > 95) {
+                    tracker = 0;
+                    t.stop();
+                }
+                slider.oninput = () => {
+                    t.stop();
+                    btnState.innerHTML = "Play";
+                    tracker = +slider.value;
+                    dateLabel.innerHTML = dateRef[slider.value];
+                    map.attr("fill", (d) => {
+
+                        return covid19_color(d.corona = dateData[dateRef[slider.value]].get(d.id) || 0);
+                    });
+                };
+            } else {
                 t.stop();
             }
+
         }, 200);
 
 
     });
 
 
-    //slider
-    const slider = document.getElementById("sliderRange");
-    const dateLabel = document.getElementById("dateLabel");
-    dateLabel.innerHTML = dateRef[slider.value]
-    slider.oninput = () => {
-        dateLabel.innerHTML = dateRef[slider.value]
-    };
+
 
 
 

@@ -2,23 +2,26 @@
 const svgContainer = document.getElementById("svgContainer")
 const w = svgContainer.clientWidth,
     h = w / 2;
-console.log(w + ", " + h);
 
 //tool tip
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-
 // color
 const domain_arr = [1]; // cases with 1+ are colored
-for (let i = 0; i < 9; i++) { // all other cases are colored with the zero case
-    domain_arr.push((i + 1) * 39); //The multiplier fo case domains
+colors = [];
+for (let i = 0; i < 20; i++) { // all other cases are colored with the zero case
+    domain_arr.push((i + 1) * 100); //The multiplier fo case domains
+    colors.push(d3.interpolateInferno((i) / 20))
 }
+// #fbb61a
 const covid19_domain = domain_arr;
 const covid19_color = d3.scaleThreshold()
     .domain(covid19_domain)
-    .range(d3.schemeReds[9]);
+    .range(colors);
+
+console.log(colors.length);
 
 // covid data csv
 const covidData = d3.map();
@@ -35,14 +38,12 @@ const createDateArr = (startDate, endDate) => {
     while (dt <= endDate) {
         arr.push(new Date(dt).toISOString().slice(0, 10));
         dt.setDate(dt.getDate() + 1);
-        // console.log(new Date(dt).toISOString().slice(0, 10))
     }
 
     return arr;
 }
 const unique = createDateArr(startDate, endDate),
     dateRef = [...new Set(unique)];
-// console.log(dateRef)
 
 // async tasks
 d3.queue()
@@ -88,8 +89,6 @@ function ready(error, data) {
         .enter()
         .append("path")
         .attr("d", geoPath)
-        .attr("stroke-width", 0.5)
-        .attr("stroke", "#ffffff")
         .on("mouseover", (d) => {
             tooltip.transition()
                 .duration(200)
@@ -104,7 +103,6 @@ function ready(error, data) {
                 .style("opacity", 0);
         })
         .attr("fill", (d) => {
-
             return covid19_color(d.corona = dateData["2020-01-21"].get(d.id) || 0);
         })
 
@@ -113,6 +111,7 @@ function ready(error, data) {
 
     // animation
     let tracker = 0;
+
     //slider
     const slider = document.getElementById("sliderRange");
     const dateLabel = document.getElementById("dateLabel");

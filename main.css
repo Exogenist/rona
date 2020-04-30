@@ -1,5 +1,5 @@
 .main-wrapper {
-    background-color: #b4b9bf;
+    background-color: #717480;
     font-family: 'Rubik', sans-serif;
 }
 
@@ -9,8 +9,14 @@
     justify-content: center;
 }
 
+.title {
+    color: #ffffff;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
 .controls button {
-    background-color: #4CAF50; /* Green */
+    background-color: rgb(76, 127, 175); /* Green */
     border: none;
     color: white;
     padding: 7px 24px;
@@ -31,7 +37,7 @@
     display: flex;
     margin: auto;
     align-items: center;
-    max-width: 1280px;
+    max-width: 1780px;
     justify-content: center;
 }
 
@@ -44,15 +50,19 @@
 div.tooltip { 
     position: absolute;     
     text-align: center;     
-    width: 80px;          
-    height: 14px;         
-    padding: 2px;       
-    font: 12px sans-serif;    
-    background: #fff; 
+    /* width: auto;          
+    height: 14px;          */
+    padding: 2px 12px;       
+    font: 12px sans-serif;
+    color: white;    
+    background: rgb(92, 92, 92); 
     border: 0px;        
-    pointer-events: none;     
+    pointer-events: none;  
+    border-radius: 25px;   
 }
 
 path:hover {
-    stroke: orange;
+    stroke-width: 1;
+    stroke: rgb(39, 231, 248);
+    
   }

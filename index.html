@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Map of Corona Infections</title>
     <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="//d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-timer.v1.min.js"></script>
@@ -14,7 +16,7 @@
 
 
 <body class="main-wrapper">
-
+    <h1 class="title">Covid-19 Cases in the USA</h1>
 
     <div class="controls">
         <button id="btnState" class="btn" type="button">Play</button>
@@ -22,11 +24,11 @@
 
     </div>
     <div class="date-wrapper">
-        <p>Covid-19 cases: <span id="dateLabel"></span></p>
+        <p><span id="dateLabel"></span></p>
     </div>
     <div class="wrapper">
-        <svg id="svgContainer" class="usamap" width="800" height="600"
-            style="max-width: 1280; height: auto; margin: auto" preserveAspectRatio="xMinYMin meet"></svg>
+        <svg id="svgContainer" class="usamap" width="1280" height="1000"
+            style="max-width: 1920; height: auto; margin: auto" preserveAspectRatio="xMinYMin meet"></svg>
     </div>
 
     <script src="./main.js"></script>

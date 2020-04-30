@@ -8,6 +8,7 @@ const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+// legend
 
 
 // color
@@ -149,7 +150,7 @@ function ready(error, data) {
                 slider.value = tracker;
                 dateLabel.innerHTML = dateRef[slider.value]
                 tracker = tracker + 1;
-                if (tracker > 95) {
+                if (tracker > 99) {
                     tracker = 0;
                     t.stop();
                     btnState.innerHTML = "Play";

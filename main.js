@@ -4,16 +4,18 @@ const w = svgContainer.clientWidth,
     h = w / 2;
 
 //tool tip
-var tooltip = d3.select("body").append("div")
+const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+
+
 // color
-const domain_arr = [1]; // cases with 1+ are colored
+const domain_arr = [1]; // cases with 10+ are colored
 colors = [];
-for (let i = 0; i < 20; i++) { // all other cases are colored with the zero case
-    domain_arr.push((i + 1) * 100); //The multiplier fo case domains
-    colors.push(d3.interpolateInferno((i) / 20))
+for (let i = 0; i < 2000; i++) { // all other cases are colored with the zero case
+    domain_arr.push((i + 1) * 10); //The multiplier fo case domains
+    colors.push(d3.interpolateInferno(Math.log(i + 1) / Math.log(2000)));
 }
 // #fbb61a
 const covid19_domain = domain_arr;
@@ -27,9 +29,9 @@ console.log(colors.length);
 const covidData = d3.map();
 const dateData = {};
 
-// tracks data for the day
+// DATE - tracks data for the day
 startDate = new Date("2020-01-21");
-endDate = new Date("2020-04-26");
+endDate = new Date("2020-04-30");
 const createDateArr = (startDate, endDate) => {
 
     const arr = new Array();
@@ -44,6 +46,7 @@ const createDateArr = (startDate, endDate) => {
 }
 const unique = createDateArr(startDate, endDate),
     dateRef = [...new Set(unique)];
+console.log(dateRef)
 
 // async tasks
 d3.queue()

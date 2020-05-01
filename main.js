@@ -8,23 +8,56 @@ const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-// legend
-
 
 // color
 const domain_arr = [1]; // cases with 10+ are colored
 colors = [];
+colorsNonLog = [];
+multiplyer = [];
 for (let i = 0; i < 2000; i++) { // all other cases are colored with the zero case
     domain_arr.push((i + 1) * 10); //The multiplier fo case domains
     colors.push(d3.interpolateInferno(Math.log(i + 1) / Math.log(2000)));
+    colorsNonLog.push(d3.interpolateInferno((i + 1) / 2000));
+    multiplyer.push(Math.round(Math.log(i + 1) / Math.log(2000) * 20));
 }
-// #fbb61a
+
 const covid19_domain = domain_arr;
 const covid19_color = d3.scaleThreshold()
     .domain(covid19_domain)
     .range(colors);
 
-console.log(colors.length);
+// Legend
+const modReduceArr = (x, z) => {
+    const arr = [];
+    for (let i = 0; i < x.length; i++) {
+        if (i % z === 0) {
+            arr.push(x[i]);
+        }
+    }
+    return arr
+},
+    legendMultiplyer = modReduceArr(multiplyer, 100);
+colorsNonLogReduced = modReduceArr(colorsNonLog, 100);
+
+drawLegend = () => {
+    console.log(legendMultiplyer);
+    for (let i = 0; i < colorsNonLogReduced.length; i++) {
+        if (legendMultiplyer.includes(i)) {
+            d3.select(".legend-wrapper").append("div")
+                .attr("class", "legend-label")
+                .style("background-color", "black");
+            d3.select(".legend-wrapper").append("div")
+                .attr("class", "legend")
+                .style("background-color", colorsNonLogReduced[i]);
+        } else {
+            d3.select(".legend-wrapper").append("div")
+                .attr("class", "legend")
+                .style("background-color", colorsNonLogReduced[i]);
+        }
+
+    }
+}
+drawLegend();
 
 // covid data csv
 const covidData = d3.map();
@@ -47,7 +80,7 @@ const createDateArr = (startDate, endDate) => {
 }
 const unique = createDateArr(startDate, endDate),
     dateRef = [...new Set(unique)];
-console.log(dateRef)
+
 
 // async tasks
 d3.queue()

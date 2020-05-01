@@ -66,3 +66,20 @@ path:hover {
     stroke: rgb(39, 231, 248);
     
   }
+
+  .legend-wrapper {
+      display:grid;
+      grid-template-columns: repeat(28, auto);
+      width:208px;
+    
+
+  }
+
+  .legend {
+      width:10px;
+      height:20px;
+  }
+  .legend-label {
+    width:1px;
+    height:20px;
+}

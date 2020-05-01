@@ -76,7 +76,7 @@ path:hover {
   .legend-wrapper {
       display:grid;
       grid-template-columns: repeat(28, auto);
-      width:216px;
+      width:208px; 
       margin: auto;
       padding-top:30px;
     
@@ -108,7 +108,7 @@ path:hover {
     height: auto;
     opacity: 0.5;
     transition: opacity 1s;
-    margin: 30px 10px 0px 0px;
+    margin: 50px 10px 0px 0px;
 
     
 }
@@ -124,3 +124,17 @@ path:hover {
     align-items: center;
     justify-content: center;
 }
+
+.mid{
+    text-align: center;
+    float: right;
+    margin: 0px 0px 0px 64px;
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 300px 0px 0px 0px
+}
+

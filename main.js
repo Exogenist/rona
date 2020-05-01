@@ -37,12 +37,11 @@ const modReduceArr = (x, z) => {
     return arr
 },
     legendMultiplyer = modReduceArr(multiplyer, 100),
-    colorsNonLogReduced = modReduceArr(colorsNonLog, 100);
-
+    colorsNonLogReduced = modReduceArr(colorsNonLog, 100)
+quickFix = [11, 15, 18, 19]; // <--- remove this hack
 drawLegend = () => {
-    console.log(legendMultiplyer);
     for (let i = 0; i < colorsNonLogReduced.length; i++) {
-        if (legendMultiplyer.includes(i)) {
+        if (quickFix.includes(i)) {
             d3.select(".legend-wrapper").append("div")
                 .attr("class", "legend-label")
                 .style("background-color", "black");
@@ -149,6 +148,8 @@ function ready(error, data) {
         .style("opacity", 0)
         .style("opacity", "1");
 
+    d3.select(".loader").style("display", "none")
+
     // animation
     let tracker = 0;
 
@@ -179,7 +180,7 @@ function ready(error, data) {
             if (btnState.innerHTML === "Stop") {
 
                 map.transition()
-                    .duration(500).attr("fill", (d) => {
+                    .duration(200).attr("fill", (d) => {
 
                         return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
                     });
@@ -212,14 +213,15 @@ function ready(error, data) {
     });
 
     // resize window function
-    let resizeHelper;
-    const resize = () => {
-        map.attr("transform", "scale(" + svgContainer.clientWidth / w + ")");
-    };
+    // let resizeHelper;
+    // const resize = () => {
+    //     map.attr("transform", "scale(" + svgContainer.clientWidth / w + ")");
+    // };
     window.onresize = () => {
-        clearTimeout(resizeHelper);
-
-        resizeHelper = setTimeout(resize, 500);
+        // May use again
+        // clearTimeout(resizeHelper);
+        map.attr("transform", "scale(" + svgContainer.clientWidth / w + ")");
+        // resizeHelper = setTimeout(resize, 500);
     }
 
 }

@@ -36,8 +36,8 @@ const modReduceArr = (x, z) => {
     }
     return arr
 },
-    legendMultiplyer = modReduceArr(multiplyer, 100);
-colorsNonLogReduced = modReduceArr(colorsNonLog, 100);
+    legendMultiplyer = modReduceArr(multiplyer, 100),
+    colorsNonLogReduced = modReduceArr(colorsNonLog, 100);
 
 drawLegend = () => {
     console.log(legendMultiplyer);
@@ -86,7 +86,6 @@ const unique = createDateArr(startDate, endDate),
 d3.queue()
     .defer(d3.json, "./counties-10m.json")
     .defer(d3.csv, "./us-counties.csv", function (d) {
-
         // get data by date
         if (d.date) {
             if (dateData.hasOwnProperty(d.date)) {
@@ -104,7 +103,6 @@ d3.queue()
 function ready(error, data) {
 
     if (error) throw error;
-
     // gather map
     const usa_map = topojson.feature(data, {
         type: "GeometryCollection",
@@ -141,10 +139,15 @@ function ready(error, data) {
         })
         .attr("fill", (d) => {
             return covid19_color(d.corona = dateData["2020-01-21"].get(d.id) || 0);
-        })
+        });
 
 
-
+    // display UI
+    d3.select(".main-wrapper")
+        .transition()
+        .duration(500)
+        .style("opacity", 0)
+        .style("opacity", "1");
 
     // animation
     let tracker = 0;
@@ -175,10 +178,11 @@ function ready(error, data) {
 
             if (btnState.innerHTML === "Stop") {
 
-                map.attr("fill", (d) => {
+                map.transition()
+                    .duration(500).attr("fill", (d) => {
 
-                    return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
-                });
+                        return covid19_color(d.corona = dateData[dateRef[tracker]].get(d.id) || 0);
+                    });
 
                 slider.value = tracker;
                 dateLabel.innerHTML = dateRef[slider.value]

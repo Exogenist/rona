@@ -1,6 +1,15 @@
-.main-wrapper {
-    background-color: #717480;
+body {
+    background-color: white;
     font-family: 'Rubik', sans-serif;
+    color:#586169;
+    background: #e6eaed;
+
+}
+
+.main-wrapper {
+    
+    opacity: 0;
+
 }
 
 .wrapper {
@@ -10,13 +19,12 @@
 }
 
 .title {
-    color: #ffffff;
     font-size: 1.5rem;
     text-align: center;
 }
 
 .controls button {
-    background-color: rgb(76, 127, 175); /* Green */
+    background-color: rgb(76, 127, 175); 
     border: none;
     color: white;
     padding: 7px 24px;
@@ -43,15 +51,13 @@
 
 .date-wrapper p {
     text-align: center;
-    color: #ffffff;
-    font-size: 0.8rem;
+    font-size: 1.5rem;
+    margin-top: 30px;
 }
 
 div.tooltip { 
     position: absolute;     
     text-align: center;     
-    /* width: auto;          
-    height: 14px;          */
     padding: 2px 12px;       
     font: 12px sans-serif;
     color: white;    
@@ -70,7 +76,9 @@ path:hover {
   .legend-wrapper {
       display:grid;
       grid-template-columns: repeat(28, auto);
-      width:208px;
+      width:216px;
+      margin: auto;
+      padding-top:30px;
     
 
   }
@@ -80,6 +88,39 @@ path:hover {
       height:20px;
   }
   .legend-label {
-    width:1px;
+    width:2px;
     height:20px;
+}
+
+.legend-num {
+    width:216px;
+    margin: auto;
+    font-size: 0.5rem;
+
+}
+
+.legend-num p span {
+    float: right;
+}
+
+.github-icon a img {
+    width: 1.5rem;
+    height: auto;
+    opacity: 0.5;
+    transition: opacity 1s;
+    margin: 30px 10px 0px 0px;
+
+    
+}
+
+.github-icon a img:hover {
+    opacity: 1;
+}
+
+.github-icon {
+    max-width: 580px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

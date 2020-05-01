@@ -12,27 +12,43 @@
     <script src="//d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-timer.v1.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js">
     <link rel="stylesheet" href="main.css">
 
 
-<body class="main-wrapper">
-    <h1 class="title">Covid-19 Cases in the USA</h1>
+<body>
+    <div class="main-wrapper">
+        <h1 class="title">Covid-19 Cases in the USA</h1>
+        <div class="controls">
+            <button id="btnState" class="btn" type="button">Play</button>
+            <input id="sliderRange" type="range" min=0 max=99 value=0>
 
-    <div class="controls">
-        <button id="btnState" class="btn" type="button">Play</button>
-        <input id="sliderRange" type="range" min=0 max=99 value=0>
+        </div>
+        <div class="legend-wrapper"></div>
+        <div class="legend-num">
+            <p>0 <span>55,000+</span></p>
+        </div>
+        <div class="date-wrapper">
+            <p><span id="dateLabel"></span></p>
+        </div>
+        <div class="wrapper">
+            <svg id="svgContainer" class="usamap" width="1920" height="1000"
+                style="max-width: 1920; height: auto; margin: auto" preserveAspectRatio="xMinYMin meet"></svg>
 
+        </div>
+        <div class="github-icon">
+
+            <a href="https://github.com/Exogenist/rona" target="__blank"><img src="./github-brands.svg"
+                    alt="github"></a>
+            <a href="https://www.instagram.com/_exogenist/" target="__blank"><img src="./instagram-brands.svg"
+                    alt="instagram"></a>
+            <a href="https://exogenist.tech/" target="__blank"><img src=" ./user-tie-solid.svg" alt=" My portfolio" "></a>
+
+
+        </div>
     </div>
-    <div class="date-wrapper">
-        <p><span id="dateLabel"></span></p>
-    </div>
-    <div class="wrapper">
-        <svg id="svgContainer" class="usamap" width="1280" height="1000"
-            style="max-width: 1920; height: auto; margin: auto" preserveAspectRatio="xMinYMin meet"></svg>
-    </div>
-    <div class="legend-wrapper"></div>
 
-    <script src="./main.js"></script>
-</body>
 
-</html>
+
+
+    <script src=" ./main.js"> </script> </body> </html>
